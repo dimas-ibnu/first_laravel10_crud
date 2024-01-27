@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\PostResource;
 
 
 class PostController extends Controller
@@ -19,6 +20,16 @@ class PostController extends Controller
 
         //render view with posts
         return view('posts.index', compact('posts'));
+    }
+
+    /// return api response
+    public function all()
+    {
+        //get all posts
+        $posts = Post::latest()->paginate(5);
+
+        //return collection of posts as a resource
+        return new PostResource(true, 'List Data Posts', $posts);
     }
 
     // display post create form
